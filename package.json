@@ -1,0 +1,15 @@
+{
+  "name": "kalypso-sdk-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kalypso-sdk": "^1.0.30",
+    "ts-node": "^10.9.2"
+  }
+}
