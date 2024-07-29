@@ -8,6 +8,7 @@ import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import BigNumber from "bignumber.js";
+import { marketId } from "../../requestData.json"
 
 let pub_key =
   "0x30820122300d06092a864886f70d01010105000382010f003082010a0282010100c5529f21f0afe6df78e83aab07b66c11ed9203af47a8ab9fdda4a83b4ae767720b833d2e150fcb4a4aec2776d0aa9762a3955d402b0c2665d3c4aa5db002656b65c75712eef82289d92bd6a3fba04d846e3680d1f9c0598a6717f07ae65400feb9d62156ecb37e0ef0c781299e300e268d825205ffad8892e267e63083348de4670907a8e23d4a03bc3a34496abb923fdf6181126cb073cf7a41620be431c7e1dc65e3d80a62fd76d04f8d011435529c7d683fc9f7c766c4527d3082b7dd2e5254876e1c8b296f41618c92cbb359b54df35010caa84286c35d7bf32c2fefd11c655fa48390c35d54274454a0ff749f8951fb23ee79a01e51a052716df0bc44db0203010001";
@@ -33,7 +34,7 @@ async function main() {
   const assignmentDeadline = new BigNumber(latestBlock).plus(100000000000);
 
   const askRequest = await kalypso.MarketPlace().createAsk(
-    "20",
+    marketId,
     encoded,
     reward,
     assignmentDeadline.toFixed(0),
