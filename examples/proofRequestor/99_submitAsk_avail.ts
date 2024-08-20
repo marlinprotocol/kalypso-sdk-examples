@@ -44,7 +44,7 @@ const createAskTest = async () => {
   });
   const proofGenerationTimeInBlocks = new BigNumber(100000000000);
 
-  // data
+  // 1. NOTES: Encrypt the data on client side, i.e users themselves can encrypt the requests and send.
   const encryptedRequestData = await MarketPlace.createEncryptedRequestData(
     inputBytes,
     Buffer.from(secretString),
@@ -53,6 +53,7 @@ const createAskTest = async () => {
   );
   // console.log(JSON.stringify(encryptedRequestData));
 
+  // 2. NOTES: Additional check can be performed both at client-level or avail-server to see if the request is valid...
   const isValid = await kalypso
     .MarketPlace()
     .verifyEncryptedInputs(encryptedRequestData, marketId.toString());
@@ -61,7 +62,7 @@ const createAskTest = async () => {
     throw new Error("Better not create a request, if it is not provable to prevent loss of funds");
   }
 
-  // Create ASK request
+  // 3. NOTES: Avail server should have a new end point that creates a request. STEP2 and STEP3 can be combined in avail server into a single point.
   const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
     marketId,
     encryptedRequestData.publicInputs,
