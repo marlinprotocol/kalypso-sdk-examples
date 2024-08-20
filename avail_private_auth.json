@@ -1,4 +1,5 @@
 {
+    "network": "1u16",
     "auth": {
         "requests": [
             {

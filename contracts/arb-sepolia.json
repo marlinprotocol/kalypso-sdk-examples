@@ -23,6 +23,6 @@
     "url": "http://13.201.131.193:5000",
     "utilityUrl": "http://13.201.131.193:1500"
   },
-  "checkInputUrl": "http://not deployed yet:3030",
+  "checkInputUrl": "http://localhost:3030/api/checkEncryptedInputs",
   "attestationVerifierEndPoint": "http://13.201.207.60:1400"
 }

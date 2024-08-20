@@ -9,10 +9,12 @@ import BigNumber from "bignumber.js";
 
 import * as fs from "fs";
 import { marketId } from "../../requestData.json";
+import { MarketPlace } from "kalypso-sdk/dist/operators/marketPlace";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
-
 
 const reward = new BigNumber(10).pow(18).multipliedBy(145).div(10).toFixed(0);
 
@@ -26,34 +28,38 @@ const createAskTest = async () => {
   let inputBytes = abiCoder.encode(["string[1]"], [[public_input.public]]);
   console.log({ inputBytes });
 
-  const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
+  const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
+  const matchingEngineKey = (
+    await kalypso.MarketPlace().readMePubKeyInContract()
+  ).toString();
 
   const secretString = JSON.stringify(secret);
 
   const latestBlock = await provider.getBlockNumber();
 
   const assignmentDeadline = new BigNumber(latestBlock).plus(100000000000);
-  console.log({ latestBlock, assignmentDeadline: assignmentDeadline.toFixed(0) });
+  console.log({
+    latestBlock,
+    assignmentDeadline: assignmentDeadline.toFixed(0),
+  });
   const proofGenerationTimeInBlocks = new BigNumber(100000000000);
 
   // data
-  const encryptedRequestData = await kalypso.MarketPlace().createEncryptedRequestData(inputBytes, Buffer.from(secretString), marketId);
-  console.log({ encryptedRequestData });
-  
-  const ivsCheckEciesCheckingKey = await kalypso.MarketPlace().IvsEnclaveConnector().fetchInputVerifierPublicKeys();
-
-  const isGoodRequest = await kalypso.MarketPlace().checkInputsAndEncryptedSecretWithIvs(
-    marketId,
+  const encryptedRequestData = await MarketPlace.createEncryptedRequestData(
     inputBytes,
     Buffer.from(secretString),
-    kalypso.MarketPlace().IvsEnclaveConnector().checkInputUrl(),
-    ivsCheckEciesCheckingKey.data.ecies_public_key
+    marketId,
+    matchingEngineKey
   );
+  // console.log(JSON.stringify(encryptedRequestData));
 
-  if (!isGoodRequest) {
+  const isValid = await kalypso
+    .MarketPlace()
+    .verifyEncryptedInputs(encryptedRequestData, marketId.toString());
+
+  if (!isValid) {
     throw new Error("Better not create a request, if it is not provable to prevent loss of funds");
   }
-  console.log({ isGoodRequest });
 
   // Create ASK request
   const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
@@ -72,6 +78,7 @@ const createAskTest = async () => {
 
   const askId = await kalypso.MarketPlace().getAskId(tx!);
   const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
+  console.log({ proof })
 };
 
 createAskTest();
