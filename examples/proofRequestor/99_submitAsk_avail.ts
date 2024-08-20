@@ -3,7 +3,8 @@ import { KalypsoSdk } from "kalypso-sdk";
 
 import { ethers } from "ethers";
 
-import * as secret from "../../secret.json";
+import * as secret from "../../avail_private_auth.json";
+import * as public_input from "../../avail.json";
 import BigNumber from "bignumber.js";
 
 import * as fs from "fs";
@@ -21,15 +22,8 @@ const createAskTest = async () => {
 
   console.log("using address", await wallet.getAddress());
 
-  const avail = {
-    p_in_1: "aleo1rn636g94mx3qqhf7m79nsne3llv4dqs25707yhwcrk92p0kwrc9qe392wg",
-    p_in_2: "3u64",
-    p_in_3: "1u64",
-    secret: "",
-  };
-
   let abiCoder = new ethers.AbiCoder();
-  let inputBytes = abiCoder.encode(["string[3]"], [[avail.p_in_1, avail.p_in_2, avail.p_in_3]]);
+  let inputBytes = abiCoder.encode(["string[1]"], [[public_input.public]]);
   console.log({ inputBytes });
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
@@ -42,35 +36,42 @@ const createAskTest = async () => {
   console.log({ latestBlock, assignmentDeadline: assignmentDeadline.toFixed(0) });
   const proofGenerationTimeInBlocks = new BigNumber(100000000000);
 
-  // const ivsCheckEciesCheckingKey = await kalypso.MarketPlace().IvsEnclaveConnector().fetchInputVerifierPublicKeys();
+  // data
+  const encryptedRequestData = await kalypso.MarketPlace().createEncryptedRequestData(inputBytes, Buffer.from(secretString), marketId);
+  console.log({ encryptedRequestData });
+  
+  const ivsCheckEciesCheckingKey = await kalypso.MarketPlace().IvsEnclaveConnector().fetchInputVerifierPublicKeys();
 
-  // const isGoodRequest = await kalypso.MarketPlace().checkInputsAndEncryptedSecretWithIvs(
-  //   marketId,
-  //   inputBytes,
-  //   Buffer.from(secretString),
-  //   kalypso.MarketPlace().IvsEnclaveConnector().checkInputUrl(),
-  //   ivsCheckEciesCheckingKey.data.ecies_public_key
-  // );
-
-  // if (!isGoodRequest) {
-  //   throw new Error("Better not create a request, if it is not provable to prevent loss of funds");
-  // }
-  // console.log({ isGoodRequest });
-
-  // Create ASK request
-  const askRequest = await kalypso.MarketPlace().createAsk(
+  const isGoodRequest = await kalypso.MarketPlace().checkInputsAndEncryptedSecretWithIvs(
     marketId,
     inputBytes,
+    Buffer.from(secretString),
+    kalypso.MarketPlace().IvsEnclaveConnector().checkInputUrl(),
+    ivsCheckEciesCheckingKey.data.ecies_public_key
+  );
+
+  if (!isGoodRequest) {
+    throw new Error("Better not create a request, if it is not provable to prevent loss of funds");
+  }
+  console.log({ isGoodRequest });
+
+  // Create ASK request
+  const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
+    marketId,
+    encryptedRequestData.publicInputs,
     reward,
     assignmentDeadline.toFixed(0),
     proofGenerationTimeInBlocks.toFixed(0),
     await wallet.getAddress(),
     0, // TODO: keep this 0 for now
-    Buffer.from(secretString),
-    false,
+    encryptedRequestData.encryptedSecret,
+    encryptedRequestData.acl,
   );
   const tx = await askRequest.wait();
   console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
+
+  const askId = await kalypso.MarketPlace().getAskId(tx!);
+  const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
 };
 
 createAskTest();

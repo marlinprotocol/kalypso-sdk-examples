@@ -1,6 +1,6 @@
 {
-  "marketId": 3,
-  "startBlock": 53506478,
-  "teeVerifier": "0xdc94BAe6ed69Ec9912d1472f495948c2151EA2fC",
-  "programName": "zkbob-generator"
+  "marketId": 19,
+  "startBlock": 69330000,
+  "teeVerifier": "0xC7cE913445CA0037c6f112f3450AF570CB9064AD",
+  "programName": "avail-generator"
 }

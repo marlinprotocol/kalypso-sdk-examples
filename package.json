@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "kalypso-sdk": "^1.0.33",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
     "@types/node": "^22.4.1"
