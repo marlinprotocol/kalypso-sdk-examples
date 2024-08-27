@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig } from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { programName } from "../../../requestData.json";
 
