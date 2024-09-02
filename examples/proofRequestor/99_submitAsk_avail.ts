@@ -12,9 +12,9 @@ import { marketId } from "../../requestData.json";
 import { MarketPlace } from "kalypso-sdk/dist/operators/marketPlace";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
 );
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 const reward = new BigNumber(10).pow(18).multipliedBy(145).div(10).toFixed(0);
 
@@ -56,8 +56,8 @@ const createAskTest = async () => {
   // 2. NOTES: Additional check can be performed both at client-level or avail-server to see if the request is valid...
   const isValid = await kalypso
     .MarketPlace()
-    .verifyEncryptedInputs(encryptedRequestData, marketId.toString());
-
+    .verifyEncryptedInputs(encryptedRequestData, "http://localhost:3000/decryptRequest", marketId.toString());
+  
   if (!isValid) {
     throw new Error(
       "Better not create a request, if it is not provable to prevent loss of funds",
