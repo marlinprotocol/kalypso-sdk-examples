@@ -4,9 +4,10 @@ import { ethers } from "ethers";
 import { PublicKey } from "eciesjs";
 import * as fs from "fs";
 
-
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+);
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 //check if both the values can be same
 
@@ -18,7 +19,10 @@ async function main1(): Promise<string> {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const meAttestation = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().getAttestation();
+  const meAttestation = await kalypso
+    .MarketPlace()
+    .MatchingEngineEnclaveConnector()
+    .getAttestation();
 
   const pubkey = PublicKey.fromHex(meAttestation.secp_key as string);
   console.log("me key from attestation", pubkey.compressed.toString("hex"));
@@ -26,9 +30,14 @@ async function main1(): Promise<string> {
   const meSignature = await kalypso
     .MarketPlace()
     .MatchingEngineEnclaveConnector()
-    .getAttestationSignature(meAttestation.attestation_document.toString(), kalypsoConfig.proof_market_place);
+    .getAttestationSignature(
+      meAttestation.attestation_document.toString(),
+      kalypsoConfig.proof_market_place,
+    );
 
-  const tx = await kalypso.Admin().updateMeEciesKeyAndSigner(meAttestation.attestation_document, meSignature);
+  const tx = await kalypso
+    .Admin()
+    .updateMeEciesKeyAndSigner(meAttestation.attestation_document, meSignature);
   console.log("Updated ME Signer Tx ", tx.hash);
   return "Updated ME Signer";
 }

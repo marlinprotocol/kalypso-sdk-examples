@@ -1,12 +1,18 @@
-import { ContractTransactionReceipt, ContractTransactionResponse, ethers } from "ethers";
+import {
+  ContractTransactionReceipt,
+  ContractTransactionResponse,
+  ethers,
+} from "ethers";
 import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import BigNumber from "bignumber.js";
 import { marketId } from "../../requestData.json";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+);
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
@@ -23,12 +29,18 @@ async function main() {
   let tx: ContractTransactionResponse;
   let receipt: ContractTransactionReceipt | null;
 
-  let attestation = await kalypso.Generator().GeneratorEnclaveConnector().getAttestation();
+  let attestation = await kalypso
+    .Generator()
+    .GeneratorEnclaveConnector()
+    .getAttestation();
 
   const enclaveSignature = await kalypso
     .Generator()
     .GeneratorEnclaveConnector()
-    .getAttestationSignature(attestation.attestation_document.toString(), await wallet.getAddress());
+    .getAttestationSignature(
+      attestation.attestation_document.toString(),
+      await wallet.getAddress(),
+    );
 
   // const tx_2 = await kalypso.Generator().updateEcisKey(marketId, attestation.attestation_document, enclaveSignature);
 

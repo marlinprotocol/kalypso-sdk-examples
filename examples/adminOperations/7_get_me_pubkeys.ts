@@ -5,7 +5,9 @@ import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { PublicKey } from "eciesjs";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
@@ -15,7 +17,10 @@ async function main(): Promise<string> {
   console.log("using address", await wallet.getAddress());
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const result = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().getMatchingEnginePublicKeys();
+  const result = await kalypso
+    .MarketPlace()
+    .MatchingEngineEnclaveConnector()
+    .getMatchingEnginePublicKeys();
   console.log({ result });
 
   const meResult = await kalypso.MarketPlace().readMePubKeyInContract();

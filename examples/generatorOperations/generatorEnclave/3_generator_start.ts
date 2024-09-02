@@ -4,7 +4,9 @@ import { KalypsoSdk } from "../../../src";
 import * as fs from "fs";
 import { programName } from "../../../requestData.json";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
@@ -15,10 +17,16 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const data1 = await kalypso.Generator().GeneratorEnclaveConnector().startListener();
+  const data1 = await kalypso
+    .Generator()
+    .GeneratorEnclaveConnector()
+    .startListener();
   console.log(JSON.stringify(data1, null, 4));
 
-  const data2 = await kalypso.Generator().GeneratorEnclaveConnector().startProgram(programName);
+  const data2 = await kalypso
+    .Generator()
+    .GeneratorEnclaveConnector()
+    .startProgram(programName);
   console.log(JSON.stringify(data2, null, 4));
   return "Done";
 }

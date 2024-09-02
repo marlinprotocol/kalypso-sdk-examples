@@ -6,7 +6,9 @@ import * as fs from "fs";
 
 import { marketId } from "../../requestData.json";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
@@ -16,7 +18,10 @@ async function main(): Promise<string> {
   console.log("using address", await wallet.getAddress());
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const ivsAttestationData = await kalypso.MarketPlace().IvsEnclaveConnector().getAttestation();
+  const ivsAttestationData = await kalypso
+    .MarketPlace()
+    .IvsEnclaveConnector()
+    .getAttestation();
   console.log({ ivsAttestationData });
   // console.log({ ivs_enclave_ecies_key: ivsAttestationData.secp_key });
   // const ivsPubkey = PublicKey.fromHex(ivsAttestationData.secp_key as string);
@@ -25,11 +30,20 @@ async function main(): Promise<string> {
   const enclaveSignature = await kalypso
     .MarketPlace()
     .IvsEnclaveConnector()
-    .getAttestationSignature(ivsAttestationData.attestation_document.toString(), await wallet.getAddress());
+    .getAttestationSignature(
+      ivsAttestationData.attestation_document.toString(),
+      await wallet.getAddress(),
+    );
 
   console.log({ enclaveSignature });
 
-  const result = await kalypso.Generator().addIvsKey(marketId, ivsAttestationData.attestation_document.toString(), enclaveSignature);
+  const result = await kalypso
+    .Generator()
+    .addIvsKey(
+      marketId,
+      ivsAttestationData.attestation_document.toString(),
+      enclaveSignature,
+    );
   console.log({ result: result.hash });
 
   return "Done";

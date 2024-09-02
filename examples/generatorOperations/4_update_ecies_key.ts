@@ -4,8 +4,10 @@ import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { PublicKey } from "eciesjs";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+);
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
@@ -17,7 +19,10 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  let attestation = await kalypso.Generator().GeneratorEnclaveConnector().getAttestation();
+  let attestation = await kalypso
+    .Generator()
+    .GeneratorEnclaveConnector()
+    .getAttestation();
   // let attestation = await kalypso
   //   .Generator()
   //   .GeneratorEnclaveConnector()
@@ -42,9 +47,18 @@ async function main() {
   const enclaveSignature = await kalypso
     .Generator()
     .GeneratorEnclaveConnector()
-    .getAttestationSignature(attestation.attestation_document.toString(), await wallet.getAddress());
+    .getAttestationSignature(
+      attestation.attestation_document.toString(),
+      await wallet.getAddress(),
+    );
 
-  const tx = await kalypso.Generator().updateEcisKey(marketId, attestation.attestation_document, enclaveSignature);
+  const tx = await kalypso
+    .Generator()
+    .updateEcisKey(
+      marketId,
+      attestation.attestation_document,
+      enclaveSignature,
+    );
 
   const receipt = await tx.wait();
   console.log("Added Generator ECIES key: ", receipt?.hash);

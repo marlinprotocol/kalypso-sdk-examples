@@ -12,7 +12,7 @@ import { marketId } from "../../requestData.json";
 import { MarketPlace } from "kalypso-sdk/dist/operators/marketPlace";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -49,7 +49,7 @@ const createAskTest = async () => {
     inputBytes,
     Buffer.from(secretString),
     marketId,
-    matchingEngineKey
+    matchingEngineKey,
   );
   // console.log(JSON.stringify(encryptedRequestData));
 
@@ -59,27 +59,38 @@ const createAskTest = async () => {
     .verifyEncryptedInputs(encryptedRequestData, marketId.toString());
 
   if (!isValid) {
-    throw new Error("Better not create a request, if it is not provable to prevent loss of funds");
+    throw new Error(
+      "Better not create a request, if it is not provable to prevent loss of funds",
+    );
   }
 
   // 3. NOTES: Avail server should have a new end point that creates a request. STEP2 and STEP3 can be combined in avail server into a single point.
-  const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
-    marketId,
-    encryptedRequestData.publicInputs,
-    reward,
-    assignmentDeadline.toFixed(0),
-    proofGenerationTimeInBlocks.toFixed(0),
-    await wallet.getAddress(),
-    0, // TODO: keep this 0 for now
-    encryptedRequestData.encryptedSecret,
-    encryptedRequestData.acl,
-  );
+  const askRequest = await kalypso
+    .MarketPlace()
+    .createAskWithEncryptedSecretAndAcl(
+      marketId,
+      encryptedRequestData.publicInputs,
+      reward,
+      assignmentDeadline.toFixed(0),
+      proofGenerationTimeInBlocks.toFixed(0),
+      await wallet.getAddress(),
+      0, // TODO: keep this 0 for now
+      encryptedRequestData.encryptedSecret,
+      encryptedRequestData.acl,
+    );
   const tx = await askRequest.wait();
-  console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
+  console.log(
+    "Ask Request Hash: ",
+    askRequest.hash,
+    " at block",
+    tx?.blockNumber,
+  );
 
   const askId = await kalypso.MarketPlace().getAskId(tx!);
-  const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
-  console.log({ proof })
+  const proof = await kalypso
+    .MarketPlace()
+    .getProofByAskId(askId, tx!.blockNumber);
+  console.log({ proof });
 };
 
 createAskTest();

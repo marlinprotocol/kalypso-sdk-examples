@@ -3,7 +3,9 @@ import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
@@ -14,14 +16,20 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const attestationResult = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().getAttestation();
+  const attestationResult = await kalypso
+    .MarketPlace()
+    .MatchingEngineEnclaveConnector()
+    .getAttestation();
 
   console.log({ attestationResult });
 
   const data = await kalypso
     .MarketPlace()
     .MatchingEngineEnclaveConnector()
-    .getAttestationSignature(attestationResult.attestation_document.toString(), await wallet.getAddress());
+    .getAttestationSignature(
+      attestationResult.attestation_document.toString(),
+      await wallet.getAddress(),
+    );
 
   console.log(JSON.stringify(data, null, 4)); // signed attestation from the attestation verifier
 

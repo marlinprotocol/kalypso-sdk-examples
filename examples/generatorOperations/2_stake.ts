@@ -1,11 +1,17 @@
-import { ContractTransactionReceipt, ContractTransactionResponse, ethers } from "ethers";
+import {
+  ContractTransactionReceipt,
+  ContractTransactionResponse,
+  ethers,
+} from "ethers";
 import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import BigNumber from "bignumber.js";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+);
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
@@ -22,7 +28,12 @@ async function main() {
   let currentStake = await kalypso.Generator().getStake();
 
   if (new BigNumber(currentStake.toString()).lt(amountToStake)) {
-    tx = await kalypso.Generator().stake(await wallet.getAddress(), amountToStake.minus(currentStake.toString()).toFixed(0));
+    tx = await kalypso
+      .Generator()
+      .stake(
+        await wallet.getAddress(),
+        amountToStake.minus(currentStake.toString()).toFixed(0),
+      );
     receipt = await tx.wait();
     console.log("Stake Transaction: ", receipt?.hash);
   }

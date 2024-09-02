@@ -1,6 +1,6 @@
 {
-  "marketId": 19,
-  "startBlock": 69330000,
-  "teeVerifier": "0xC7cE913445CA0037c6f112f3450AF570CB9064AD",
+  "marketId": 0,
+  "startBlock": 1,
+  "teeVerifier": "0x4a3d0a93e474eeeaec60b89307ec2e17a8a0c761",
   "programName": "avail-generator"
 }
