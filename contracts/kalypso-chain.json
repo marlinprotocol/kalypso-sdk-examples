@@ -13,12 +13,12 @@
   "input_and_proof_format": "0xc5c263D707Db97FC1dD3A5806142357c1b102EB8",
   "tee_verifier_deployer": "0x5148269507c7563665C6BBEc0ddbbA945Ce4E5b7",
   "generatorEnclave": {
-    "url": "http://not-deployyed:5000",
-    "utilityUrl": "http://not-deployed:1500"
+    "url": "http://3.109.54.190:5000",
+    "utilityUrl": "http://3.109.54.190:1500"
   },
   "ivsEnclave": {
-    "url": "http://not-deployyed:5000",
-    "utilityUrl": "http://not-deployed:1500"
+    "url": "http://3.109.54.190:5000",
+    "utilityUrl": "http://3.109.54.190:1500"
   },
   "matchingEngineEnclave": {
     "url": "http://not-deployyed:5000",

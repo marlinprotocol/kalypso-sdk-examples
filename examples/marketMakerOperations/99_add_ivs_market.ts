@@ -7,12 +7,12 @@ import * as fs from "fs";
 import { marketId } from "../../requestData.json";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
 );
-const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
+const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
-const wallet = new ethers.Wallet(keys.private_key, provider);
+const wallet = new ethers.Wallet(keys.treasury_private_key, provider);
 
 async function main(): Promise<string> {
   console.log("using address", await wallet.getAddress());
