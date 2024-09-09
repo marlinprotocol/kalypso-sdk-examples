@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
-import { teeVerifier } from "../../requestData.json";
+import {zkb_verifier_wrapper} from "../../contracts/arb-sepolia.json"
 
 import * as fs from "fs";
 import { PublicKey } from "eciesjs";
@@ -24,9 +24,6 @@ async function main(): Promise<string> {
   };
   const marketBytes = Buffer.from(JSON.stringify(marketSetupData), "utf-8");
 
-  // const wrapperAddress = "0xD8bfa8E31Caa0088cD86993a0D3e2329Fc3A8B8d";
-
-  const wrapperAddress = teeVerifier;
   const slashingPenalty = "10000000000";
 
   // const ivsAttestationData = await kalypso.MarketPlace().IvsEnclaveConnector().getAttestation();
@@ -43,7 +40,7 @@ async function main(): Promise<string> {
   const proverImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(proverAttestationData.attestation_document);
   console.log({ proverImagePcrs });
 
-  const tx = await kalypso.MarketPlace().createPrivateMarket(marketBytes, wrapperAddress, slashingPenalty, proverImagePcrs);
+  const tx = await kalypso.MarketPlace().createPrivateMarket(marketBytes, zkb_verifier_wrapper, slashingPenalty, proverImagePcrs);
   console.log("Market Creation Receipt hash", tx.hash);
 
   return "Done";
