@@ -18,8 +18,8 @@ const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
 
 const computeAllocatedPerRequest = 1;
-const proofGenerationCost = new BigNumber(10).pow(18).toFixed(0);
-const proposedTimeInBlocks = 10000;
+const proofGenerationCost = new BigNumber(10).pow(15).toFixed(0);
+const proposedTimeInBlocks = 100000;
 
 async function main() {
   console.log("using address", await wallet.getAddress());
@@ -29,33 +29,13 @@ async function main() {
   let tx: ContractTransactionResponse;
   let receipt: ContractTransactionReceipt | null;
 
-  let attestation = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
-    .getAttestation();
-
-  const enclaveSignature = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
-    .getAttestationSignature(
-      attestation.attestation_document.toString(),
-      await wallet.getAddress(),
-    );
-
-  // const tx_2 = await kalypso.Generator().updateEcisKey(marketId, attestation.attestation_document, enclaveSignature);
-
-  // const receipt_2 = await tx_2.wait();
-  // console.log("Added Generator ECIES key: ", receipt_2?.hash);
-
   tx = await kalypso
     .Generator()
-    .joinMarketPlace(
+    .joinMarketPlaceWithoutEnclave(
       marketId,
       computeAllocatedPerRequest,
       proofGenerationCost,
-      proposedTimeInBlocks,
-      attestation.attestation_document,
-      enclaveSignature,
+      proposedTimeInBlocks
     );
   receipt = await tx.wait();
   console.log("Joined Market Place Transaction: ", receipt?.hash);

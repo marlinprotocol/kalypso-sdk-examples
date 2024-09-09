@@ -1,6 +1,6 @@
 {
-  "marketId": 0,
+  "marketId": 1,
   "startBlock": 1,
-  "teeVerifier": "0x4a3d0a93e474eeeaec60b89307ec2e17a8a0c761",
-  "programName": "avail-generator"
+  "teeVerifier": "0x42223a0536CA5B48687D15d295308068Ca37ed9b",
+  "programName": "aztec-generator"
 }

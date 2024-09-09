@@ -54,7 +54,7 @@ async function main(): Promise<string> {
 
   const tx = await kalypso
     .MarketPlace()
-    .createPrivateMarket(
+    .createPublicMarket(
       marketBytes,
       wrapperAddress,
       slashingPenalty,
