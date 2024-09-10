@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalypsoSdk } from "kalypso-sdk";
+import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import * as fs from "fs";
 import { programName } from "../../../requestData.json";
 
@@ -8,7 +8,7 @@ const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
-const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
+const wallet = new ethers.Wallet(`${keys.private_key}`, provider);
 
 async function main() {
   console.log("using address", await wallet.getAddress());

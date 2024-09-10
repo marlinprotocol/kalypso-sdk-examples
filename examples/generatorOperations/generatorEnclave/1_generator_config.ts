@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig, PortAndIvsUrl } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig, PortAndIvsUrl} from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { marketId, startBlock } from "../../../requestData.json";
 
@@ -8,7 +8,7 @@ const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
-const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
+const wallet = new ethers.Wallet(`${keys.private_key}`, provider);
 
 type DynamicKeyObject<T> = {
   [key: string]: T;
