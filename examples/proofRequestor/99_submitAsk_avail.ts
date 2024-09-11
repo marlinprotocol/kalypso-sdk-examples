@@ -33,7 +33,8 @@ const createAskTest = async () => {
     await kalypso.MarketPlace().readMePubKeyInContract()
   ).toString();
   // const matchingEngineKey =
-  //   "0x820bfa6059825247edeed10b2ef8a07b7e89d12283566538378d5fcc6dd7a47e09d67375960f2491251475cc11f5f8dc5d1802472b81b7d4f8626a7ebdddcf1e";
+  //   "0x83717e9d52af153aeee3b0f6258b40581ee0921cefc47a6e1cd3258aa85189151c232098116477dd901f20216fe9b25a4569cbce61f6fc33eca3070b4b2405f1";
+  console.log({ matchingEngineKey });
 
   const secretString = JSON.stringify(secret);
 
@@ -67,6 +68,14 @@ const createAskTest = async () => {
     const date = new Date();
     console.log("encryption done", date.getMinutes(), ":", date.getSeconds());
   }
+
+  const payload_to_server = {
+    publicInputs: new Uint8Array(encryptedRequestData.publicInputs),
+    encryptedSecret: new Uint8Array(encryptedRequestData.encryptedSecret),
+    acl: new Uint8Array(encryptedRequestData.acl),
+  };
+
+  console.log(JSON.stringify(payload_to_server));
 
   // 2. NOTES: Additional check can be performed both at client-level or avail-server to see if the request is valid...
   const isValid = await kalypso
