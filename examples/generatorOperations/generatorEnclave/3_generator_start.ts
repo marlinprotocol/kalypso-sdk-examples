@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig } from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { programName } from "../../../requestData.json";
 
@@ -17,12 +17,7 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const data1 = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
-    .startListener();
-  console.log(JSON.stringify(data1, null, 4));
-
+  // in case of avail listener and generator start with same program name
   const data2 = await kalypso
     .Generator()
     .GeneratorEnclaveConnector()

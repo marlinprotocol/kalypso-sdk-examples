@@ -2,5 +2,5 @@
   "marketId": 1,
   "startBlock": 79500000,
   "teeVerifier": "0xE7610BC62Aca7e0192ECD42E32e8d36c68D4712b",
-  "programName": "avail-generator"
+  "programName": "avail-demo-prover"
 }
