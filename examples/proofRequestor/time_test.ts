@@ -50,7 +50,7 @@ async function main() {
   console.log(chainId);
 
   const account = privateKeyToAccount(
-    "0xfece7040774399021887f602d04175d9ae60eb01ec47fb5c8f748120db190fa7",
+    "0xfece7040774399021887f602d04175d9ae60eb01ec47fb5c8f748120db190fa7"
   );
 
   const start = hrtime.bigint();

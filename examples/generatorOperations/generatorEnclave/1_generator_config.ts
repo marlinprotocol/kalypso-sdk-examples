@@ -5,7 +5,7 @@ import * as fs from "fs";
 import { marketId, startBlock } from "../../../requestData.json";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -52,7 +52,7 @@ async function main() {
       generatorStartBlock,
       421614,
       kalypso.MarketPlace().IvsEnclaveConnector().checkInputUrl(),
-      supportedMarketData,
+      supportedMarketData
     );
 
   console.log(result);

@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
 );
 
 async function main() {

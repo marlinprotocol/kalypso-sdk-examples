@@ -9,7 +9,7 @@ import * as fs from "fs";
 import BigNumber from "bignumber.js";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -32,7 +32,7 @@ async function main() {
       .Generator()
       .stake(
         await wallet.getAddress(),
-        amountToStake.minus(currentStake.toString()).toFixed(0),
+        amountToStake.minus(currentStake.toString()).toFixed(0)
       );
     receipt = await tx.wait();
     console.log("Stake Transaction: ", receipt?.hash);

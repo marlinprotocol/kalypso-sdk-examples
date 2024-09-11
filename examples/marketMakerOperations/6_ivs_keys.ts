@@ -5,7 +5,7 @@ import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 

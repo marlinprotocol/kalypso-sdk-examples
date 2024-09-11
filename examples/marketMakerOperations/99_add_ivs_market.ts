@@ -7,7 +7,7 @@ import * as fs from "fs";
 import { marketId } from "../../requestData.json";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
@@ -32,7 +32,7 @@ async function main(): Promise<string> {
     .IvsEnclaveConnector()
     .getAttestationSignature(
       ivsAttestationData.attestation_document.toString(),
-      await wallet.getAddress(),
+      await wallet.getAddress()
     );
 
   console.log({ enclaveSignature });
@@ -42,7 +42,7 @@ async function main(): Promise<string> {
     .addIvsKey(
       marketId,
       ivsAttestationData.attestation_document.toString(),
-      enclaveSignature,
+      enclaveSignature
     );
   console.log({ result: result.hash });
 

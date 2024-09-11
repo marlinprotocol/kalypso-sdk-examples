@@ -4,7 +4,7 @@ import { KalypsoSdk } from "../../../src";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -28,7 +28,7 @@ async function main() {
     .GeneratorEnclaveConnector()
     .getAttestationSignature(
       attestationResult.attestation_document.toString(),
-      await wallet.getAddress(),
+      await wallet.getAddress()
     );
   console.log(JSON.stringify(data, null, 4));
 

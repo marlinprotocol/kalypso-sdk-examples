@@ -5,7 +5,7 @@ import * as fs from "fs";
 import { PublicKey } from "eciesjs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8"),
+  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8")
 );
 const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
 
@@ -49,7 +49,7 @@ async function main() {
     .GeneratorEnclaveConnector()
     .getAttestationSignature(
       attestation.attestation_document.toString(),
-      await wallet.getAddress(),
+      await wallet.getAddress()
     );
 
   const tx = await kalypso
@@ -57,7 +57,7 @@ async function main() {
     .updateEcisKey(
       marketId,
       attestation.attestation_document,
-      enclaveSignature,
+      enclaveSignature
     );
 
   const receipt = await tx.wait();
