@@ -1,6 +1,6 @@
 {
-  "marketId": 23,
-  "startBlock": 71346357,
-  "teeVerifier": "0xb70cfd05B57a1e9b7E1217d53493C1C4B7cacb98",
+  "marketId": 0,
+  "startBlock": 79372296,
+  "teeVerifier": "0x358Da0390cc7C81017030d6C06BA2eFA09FC2AdB",
   "programName": "prover"
 }

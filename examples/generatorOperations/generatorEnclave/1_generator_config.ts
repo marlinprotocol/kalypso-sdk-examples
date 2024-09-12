@@ -20,7 +20,7 @@ const supportedMarket = marketId;
 
 // 6000 for zkbob
 // 3030 avail-prover
-supportedMarketData[supportedMarket] = { port: "6000", ivs_url: "http://not_available" };
+supportedMarketData[supportedMarket] = { port: "3000", ivs_url: "http://not_available" };
 
 async function main() {
   console.log("using address", await wallet.getAddress());

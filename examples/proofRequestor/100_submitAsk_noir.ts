@@ -64,10 +64,10 @@ const createAskTest = async () => {
   );
   const tx = await askRequest.wait();
   console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
-  const askId = await kalypso.MarketPlace().getAskId(tx as any);
+  // const askId = await kalypso.MarketPlace().getAskId(tx as any);
   // console.log("askId", askId);
 
-  await getProofWithRetry(askId, latestBlock, 20000);
+  // await getProofWithRetry(askId, latestBlock, 20000);
 
   return "Done";
 };
