@@ -26,7 +26,7 @@ async function main1(): Promise<string> {
   const meSignature = await kalypso
     .MarketPlace()
     .MatchingEngineEnclaveConnector()
-    .getAttestationSignature(meAttestation.attestation_document.toString(), kalypsoConfig.proof_market_place);
+    .getAttestationSignatureEncrypted(meAttestation.attestation_document.toString(), kalypsoConfig.proof_market_place);
 
   const tx = await kalypso.Admin().updateMeEciesKeyAndSigner(meAttestation.attestation_document, meSignature);
   console.log("Updated ME Signer Tx ", tx.hash);
