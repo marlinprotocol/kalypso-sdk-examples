@@ -26,12 +26,6 @@ async function main(): Promise<string> {
 
   const slashingPenalty = "10000000000";
 
-  // const ivsAttestationData = await kalypso.MarketPlace().IvsEnclaveConnector().getAttestation();
-  // console.log({ ivs_enclave_ecies_key: ivsAttestationData.secp_key });
-  // const ivsPubkey = PublicKey.fromHex(ivsAttestationData.secp_key as string);
-  // console.log({ ivs_compressed: ivsPubkey.compressed.toString("hex") });
-  // const ivsImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(ivsAttestationData.attestation_document);
-
   const proverAttestationData = await kalypso.Generator().GeneratorEnclaveConnector().getAttestation();
   console.log({ prover_enclave_key: proverAttestationData.secp_key });
   const proverPubKey = PublicKey.fromHex(proverAttestationData.secp_key as string);

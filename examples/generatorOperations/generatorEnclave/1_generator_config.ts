@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig, PortAndIvsUrl } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig, PortAndIvsUrl } from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { marketId, startBlock } from "../../../requestData.json";
 

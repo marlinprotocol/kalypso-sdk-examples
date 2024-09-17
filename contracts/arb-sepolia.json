@@ -12,16 +12,16 @@
   "priority_list": "0xfd94a9Aed9d5f8f00b70A1908378fcc1C4a04B4E",
   "input_and_proof_format": "0xBcBaccBA21D0F2089029a3184BcB612e5aFF7911",
   "generatorEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://43.205.85.160:5000",
+    "utilityUrl": "http://43.205.85.160:1500"
   },
   "ivsEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://43.205.85.160:5000",
+    "utilityUrl": "http://43.205.85.160:1500"
   },
   "matchingEngineEnclave": {
-    "url": "http://13.201.131.193:5000",
-    "utilityUrl": "http://13.201.131.193:1500"
+    "url": "http://not-required:5000",
+    "utilityUrl": "http://not-required:1500"
   },
   "checkInputUrl": "http://not deployed yet:3030",
   "attestationVerifierEndPoint": "http://13.201.207.60:1400"
