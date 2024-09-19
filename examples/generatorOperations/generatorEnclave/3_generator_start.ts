@@ -14,11 +14,11 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const data1 = await kalypso.Generator().GeneratorEnclaveConnector().startListener();
-  console.log(JSON.stringify(data1, null, 4));
+  // const data1 = await kalypso.Generator().GeneratorEnclaveConnector().startListener();
+  // console.log(JSON.stringify(data1, null, 4));
 
-  // const data2 = await kalypso.Generator().GeneratorEnclaveConnector().startProgram(programName);
-  // console.log(JSON.stringify(data2, null, 4));
+  const data2 = await kalypso.Generator().GeneratorEnclaveConnector().startProgram("zkbob-generator");
+  console.log(JSON.stringify(data2, null, 4));
   return "Done";
 }
 
