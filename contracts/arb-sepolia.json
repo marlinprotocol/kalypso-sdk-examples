@@ -12,12 +12,12 @@
   "priority_list": "0xfd94a9Aed9d5f8f00b70A1908378fcc1C4a04B4E",
   "input_and_proof_format": "0xBcBaccBA21D0F2089029a3184BcB612e5aFF7911",
   "generatorEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://13.201.170.126:5000",
+    "utilityUrl": "http://13.201.170.126:1500"
   },
   "ivsEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://13.201.170.126:5000",
+    "utilityUrl": "http://13.201.170.126:1500"
   },
   "matchingEngineEnclave": {
     "url": "http://13.201.131.193:5000",
