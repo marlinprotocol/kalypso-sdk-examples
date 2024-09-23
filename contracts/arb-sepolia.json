@@ -20,9 +20,9 @@
     "utilityUrl": "http://13.201.170.126:1500"
   },
   "matchingEngineEnclave": {
-    "url": "http://not-required:5000",
-    "utilityUrl": "http://not-required:1500"
+    "url": "http://13.201.131.193:5000",
+    "utilityUrl": "http://13.201.131.193:1500"
   },
-  "checkInputUrl": "http://not deployed yet:3030",
+  "checkInputUrl": "http://13.201.170.126:3030",
   "attestationVerifierEndPoint": "http://13.201.207.60:1400"
 }

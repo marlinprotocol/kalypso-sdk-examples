@@ -43,29 +43,29 @@ const createAskTest = async () => {
     marketId,
     matching_engine_pubkey_1 || matching_engine_pubkey_2.data.matching_engine_ecies_public_key,
   );
-  console.log(JSON.stringify(encryptedRequestData));
+  // console.log(JSON.stringify(encryptedRequestData));
 
   // on server
   // first, we should check if the request is good or not using `/checkEncryptedRequest` on IVS before making the next call, but ignore for now
 
   // second, we need to place request on contract
-  // const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
-  //   marketId,
-  //   encryptedRequestData.publicInputs,
-  //   reward,
-  //   assignmentDeadline.toFixed(0),
-  //   proofGenerationTimeInBlocks.toFixed(0),
-  //   await wallet.getAddress(),
-  //   0, // TODO: keep this 0 for now
-  //   encryptedRequestData.encryptedSecret,
-  //   encryptedRequestData.acl,
-  // );
-  // const tx = await askRequest.wait();
-  // console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
+  const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
+    marketId,
+    encryptedRequestData.publicInputs,
+    reward,
+    assignmentDeadline.toFixed(0),
+    proofGenerationTimeInBlocks.toFixed(0),
+    await wallet.getAddress(),
+    0, // TODO: keep this 0 for now
+    encryptedRequestData.encryptedSecret,
+    encryptedRequestData.acl,
+  );
+  const tx = await askRequest.wait();
+  console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
 
-  // const askId = await kalypso.MarketPlace().getAskId(tx!);
-  // const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
-  // console.log({ proof });
+  const askId = await kalypso.MarketPlace().getAskId(tx!);
+  const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
+  console.log({ proof });
 };
 
 createAskTest();
