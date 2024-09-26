@@ -1,6 +1,6 @@
 {
-  "marketId": 5,
+  "marketId": 7,
   "startBlock": 84000000,
   "programName": "zkbob-generator",
-  "teeVerifier": "0x93C8E56DE8133020e92138D526Ec2Ae40d430D2e"
+  "teeVerifier": "0x2cd03e804CD7154f65d3F960caB1d4a8A9B45249"
 }
