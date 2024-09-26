@@ -10,6 +10,7 @@
   "proof_market_place": "0x0b6340a893B944BDc3B4F012e934b724c83abF97",
   "priority_list": "0xfd94a9Aed9d5f8f00b70A1908378fcc1C4a04B4E",
   "input_and_proof_format": "0xBcBaccBA21D0F2089029a3184BcB612e5aFF7911",
+  "tee_verifier_deployer": "0x5acCC2F599045D13EA03e4c2b7b0Ed9F8C7Fb99C",
   "generatorEnclave": {
     "url": "http://13.201.170.126:5000",
     "utilityUrl": "http://13.201.170.126:1500"

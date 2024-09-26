@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { KalspsoConfig } from "kalypso-sdk/dist/types";
 import { KalypsoSdk } from "kalypso-sdk";
-import {transfer_verifier_wrapper} from "../../contracts/arb-sepolia.json"
+import {teeVerifier} from "../../requestData.json";
 
 import * as fs from "fs";
 import { PublicKey } from "eciesjs";
@@ -34,7 +34,7 @@ async function main(): Promise<string> {
   const proverImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(proverAttestationData.attestation_document);
   console.log({ proverImagePcrs });
 
-  const tx = await kalypso.MarketPlace().createPrivateMarket(marketBytes, transfer_verifier_wrapper, slashingPenalty, proverImagePcrs);
+  const tx = await kalypso.MarketPlace().createPrivateMarket(marketBytes, teeVerifier, slashingPenalty, proverImagePcrs);
   console.log("Market Creation Receipt hash", tx.hash);
 
   return "Done";
