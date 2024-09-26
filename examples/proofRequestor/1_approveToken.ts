@@ -4,7 +4,9 @@ import { ethers } from "ethers";
 
 import * as fs from "fs";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+);
 
 async function main() {
   const provider = new ethers.JsonRpcProvider(process.env.RPC);
@@ -14,7 +16,9 @@ async function main() {
   const approval_amount = "10000000000000000000000";
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
-  let payment_token_approval = await kalypso.MarketPlace().approvePaymentTokenToMarketPlace(approval_amount);
+  let payment_token_approval = await kalypso
+    .MarketPlace()
+    .approvePaymentTokenToMarketPlace(approval_amount);
   let py_approval_tx = await payment_token_approval.wait();
   console.log("Payment Approval Tx: ", py_approval_tx?.hash);
   console.log("Payment token approval done");
