@@ -11,9 +11,10 @@ import * as fs from "fs";
 import { marketId } from "../../requestData.json";
 import { MarketPlace } from "kalypso-sdk/dist/operators/marketPlace";
 
-const kalypsoConfig: KalspsoConfig = JSON.parse(fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"));
+const kalypsoConfig: KalspsoConfig = JSON.parse(
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+);
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
-
 
 const reward = new BigNumber(10).pow(18).multipliedBy(145).div(10).toFixed(0);
 
@@ -26,45 +27,78 @@ const createAskTest = async () => {
 
   // proof request terms
   let abiCoder = new ethers.AbiCoder();
-  let inputBytes = abiCoder.encode(["uint256[5]"], [[input.root, input.nullifier, input.out_commit, input.delta, input.memo]]);
+  let inputBytes = abiCoder.encode(
+    ["uint256[5]"],
+    [[input.root, input.nullifier, input.out_commit, input.delta, input.memo]]
+  );
   const secretString = JSON.stringify(secret);
   const latestBlock = await provider.getBlockNumber();
   const assignmentDeadline = new BigNumber(latestBlock).plus(100000000000);
-  console.log({ latestBlock, assignmentDeadline: assignmentDeadline.toFixed(0) });
+  console.log({
+    latestBlock,
+    assignmentDeadline: assignmentDeadline.toFixed(0),
+  });
   const proofGenerationTimeInBlocks = new BigNumber(100000000000);
 
-  const matching_engine_pubkey_1 = await kalypso.Admin().readMatchingEngineKey(); // reads from contracts
-  const matching_engine_pubkey_2 = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().getMatchingEnginePublicKeys(); // via http API
+  const matching_engine_pubkey_1 = await kalypso
+    .Admin()
+    .readMatchingEngineKey(); // reads from contracts
+  const matching_engine_pubkey_2 = await kalypso
+    .MarketPlace()
+    .MatchingEngineEnclaveConnector()
+    .getMatchingEnginePublicKeys(); // via http API
 
   // this is expected to be run on a frontend, and pass the encryptedRequestData to server
   const encryptedRequestData = await MarketPlace.createEncryptedRequestData(
     inputBytes,
     Buffer.from(secretString), //secretString is un-encrypted here
     marketId,
-    matching_engine_pubkey_1 || matching_engine_pubkey_2.data.matching_engine_ecies_public_key,
+    matching_engine_pubkey_1 ||
+      matching_engine_pubkey_2.data.matching_engine_ecies_public_key
   );
-  // console.log(JSON.stringify(encryptedRequestData));
 
-  // on server
-  // first, we should check if the request is good or not using `/checkEncryptedRequest` on IVS before making the next call, but ignore for now
+  // 2. NOTES: Additional check can be performed both at client-level or zkbob-server to see if the request is valid...
+  const isValid = await kalypso
+    .MarketPlace()
+    .verifyEncryptedInputs(
+      encryptedRequestData,
+      "http://13.201.131.193:3000/decryptRequest",
+      marketId.toString()
+    );
 
-  // second, we need to place request on contract
-  const askRequest = await kalypso.MarketPlace().createAskWithEncryptedSecretAndAcl(
-    marketId,
-    encryptedRequestData.publicInputs,
-    reward,
-    assignmentDeadline.toFixed(0),
-    proofGenerationTimeInBlocks.toFixed(0),
-    await wallet.getAddress(),
-    0, // TODO: keep this 0 for now
-    encryptedRequestData.encryptedSecret,
-    encryptedRequestData.acl,
-  );
+  if (!isValid) {
+    throw new Error(
+      "Better not create a request, if it is not provable to prevent loss of funds"
+    );
+  } else {
+    console.log("Encrypted request is valid");
+  }
+
+  const askRequest = await kalypso
+    .MarketPlace()
+    .createAskWithEncryptedSecretAndAcl(
+      marketId,
+      encryptedRequestData.publicInputs,
+      reward,
+      assignmentDeadline.toFixed(0),
+      proofGenerationTimeInBlocks.toFixed(0),
+      await wallet.getAddress(),
+      0, // TODO: keep this 0 for now
+      encryptedRequestData.encryptedSecret,
+      encryptedRequestData.acl
+    );
   const tx = await askRequest.wait();
-  console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
+  console.log(
+    "Ask Request Hash: ",
+    askRequest.hash,
+    " at block",
+    tx?.blockNumber
+  );
 
   const askId = await kalypso.MarketPlace().getAskId(tx!);
-  const proof = await kalypso.MarketPlace().getProofByAskId(askId, tx!.blockNumber);
+  const proof = await kalypso
+    .MarketPlace()
+    .getProofByAskId(askId, tx!.blockNumber);
   console.log({ proof });
 };
 
