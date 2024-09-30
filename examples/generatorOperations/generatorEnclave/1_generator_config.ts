@@ -18,9 +18,8 @@ const supportedMarketData: DynamicKeyObject<PortAndIvsUrl> = {};
 
 const supportedMarket = marketId;
 
-// 6000 for zkbob
-// 3030 avail-prover
-supportedMarketData[supportedMarket] = { port: "6000", ivs_url: "http://not_available" };
+// 3030 for zkbob
+supportedMarketData[supportedMarket] = { port: "3030", ivs_url: "http://13.201.170.126:5000" };
 
 async function main() {
   console.log("using address", await wallet.getAddress());
