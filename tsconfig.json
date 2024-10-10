@@ -5,15 +5,15 @@
     "module": "commonjs",
     "declaration": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "examples",
     "strict": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
   "typedocOptions": {
-    "entryPoints": ["src/index.ts"],
+    "entryPoints": ["examples/index.ts"],
     "out": "docs"
   },
-  "include": ["src"]
+  "include": ["examples"]
 }

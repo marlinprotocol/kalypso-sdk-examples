@@ -13,16 +13,16 @@
   "input_and_proof_format": "0xBcBaccBA21D0F2089029a3184BcB612e5aFF7911",
   "tee_verifier_deployer": "0x5acCC2F599045D13EA03e4c2b7b0Ed9F8C7Fb99C",
   "generatorEnclave": {
-    "url": "http://3.109.54.190:5000",
-    "utilityUrl": "http://3.109.54.190:1500"
+    "url": "http://not required:5000",
+    "utilityUrl": "http://not required:1500"
   },
   "ivsEnclave": {
-    "url": "http://3.109.54.190:5000",
-    "utilityUrl": "http://3.109.54.190:1500"
+    "url": "http://not deployed:5000",
+    "utilityUrl": "http://not deployed:1500"
   },
   "matchingEngineEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://13.201.131.193:5000",
+    "utilityUrl": "http://13.201.131.193:1500"
   },
   "checkInputUrl": "http://3.109.54.190:3030/api/checkEncryptedInputs",
   "attestationVerifierEndPoint": "http://13.201.207.60:1400"

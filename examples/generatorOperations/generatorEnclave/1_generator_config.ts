@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig, PortAndIvsUrl } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig, PortAndIvsUrl } from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 import { marketId, startBlock } from "../../../requestData.json";
 
@@ -20,8 +20,6 @@ const supportedMarketData: DynamicKeyObject<PortAndIvsUrl> = {};
 
 const supportedMarket = marketId;
 
-// 6000 for zkbob
-// 3030 avail-prover
 supportedMarketData[supportedMarket] = {
   port: "6000",
   ivs_url: "http://not_available",

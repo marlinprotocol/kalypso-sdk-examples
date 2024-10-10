@@ -3,8 +3,6 @@ import { KalypsoSdk } from "kalypso-sdk";
 
 import { ethers } from "ethers";
 
-import * as secret from "../../avail_private_auth.json";
-import * as public_input from "../../avail.json";
 import BigNumber from "bignumber.js";
 
 import * as fs from "fs";
@@ -25,7 +23,7 @@ const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
 
   let abiCoder = new ethers.AbiCoder();
-  let inputBytes = abiCoder.encode(["string[1]"], [[public_input.public]]);
+  let inputBytes = abiCoder.encode(["string"], ["43e72a96-084a-43c6-9dd6-c55f26939e07"]); // only do base parity from here right now
   console.log({ inputBytes });
 
   const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
@@ -36,7 +34,6 @@ const createAskTest = async () => {
   //   "0x83717e9d52af153aeee3b0f6258b40581ee0921cefc47a6e1cd3258aa85189151c232098116477dd901f20216fe9b25a4569cbce61f6fc33eca3070b4b2405f1";
   console.log({ matchingEngineKey });
 
-  const secretString = JSON.stringify(secret);
 
   // const latestBlock = await provider.getBlockNumber();
 
@@ -56,67 +53,20 @@ const createAskTest = async () => {
     );
   }
 
-  // 1. NOTES: Encrypt the data on client side, i.e users themselves can encrypt the requests and send.
-  const encryptedRequestData = await MarketPlace.createEncryptedRequestData(
-    inputBytes,
-    Buffer.from(secretString),
-    marketId,
-    matchingEngineKey
-  );
-  // console.log(JSON.stringify(encryptedRequestData));
-  {
-    const date = new Date();
-    console.log("encryption done", date.getMinutes(), ":", date.getSeconds());
-  }
+  const empty = Buffer.from("0x");
 
-  const payload_to_server = {
-    publicInputs: new Uint8Array(encryptedRequestData.publicInputs),
-    encryptedSecret: new Uint8Array(encryptedRequestData.encryptedSecret),
-    acl: new Uint8Array(encryptedRequestData.acl),
-  };
-
-  console.log(JSON.stringify(payload_to_server));
-
-  // 2. NOTES: Additional check can be performed both at client-level or avail-server to see if the request is valid...
-  const isValid = await kalypso
-    .MarketPlace()
-    .verifyEncryptedInputs(
-      encryptedRequestData,
-      "http://13.201.131.193:3000/decryptRequest",
-      marketId.toString()
-    );
-
-  if (!isValid) {
-    throw new Error(
-      "Better not create a request, if it is not provable to prevent loss of funds"
-    );
-  } else {
-    console.log("Encrypted request is valid");
-  }
-
-  {
-    const date = new Date();
-    console.log(
-      "validity checked and placing request on chain",
-      date.getMinutes(),
-      ":",
-      date.getSeconds()
-    );
-  }
-
-  // 3. NOTES: Avail server should have a new end point that creates a request. STEP2 and STEP3 can be combined in avail server into a single point.
+  // 2.TODO. Verify before whether this request is provable before shooting request out
   const askRequest = await kalypso
     .MarketPlace()
-    .createAskWithEncryptedSecretAndAcl(
+    .createAsk(
       marketId,
-      encryptedRequestData.publicInputs,
+      inputBytes,
       reward,
       assignmentDeadline.toFixed(0),
       proofGenerationTimeInBlocks.toFixed(0),
       await wallet.getAddress(),
       0, // TODO: keep this 0 for now
-      encryptedRequestData.encryptedSecret,
-      encryptedRequestData.acl
+      empty
     );
   let tx = await askRequest.wait(10);
   const date = new Date();

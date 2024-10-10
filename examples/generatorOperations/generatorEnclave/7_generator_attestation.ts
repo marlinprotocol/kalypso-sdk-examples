@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { KalspsoConfig } from "../../../src/types";
-import { KalypsoSdk } from "../../../src";
+import { KalspsoConfig } from "kalypso-sdk/dist/types";
+import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
@@ -16,11 +16,10 @@ async function main() {
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const attestationVeriferEndPoint = "http://65.1.112.107:1400";
   const data = await kalypso
     .Generator()
     .GeneratorEnclaveConnector()
-    .getAttestation(attestationVeriferEndPoint);
+    .getAttestation();
   console.log(JSON.stringify(data, null, 4));
 
   return "Done";

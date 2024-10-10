@@ -29,33 +29,13 @@ async function main() {
   let tx: ContractTransactionResponse;
   let receipt: ContractTransactionReceipt | null;
 
-  let attestation = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
-    .getAttestation();
-
-  const enclaveSignature = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
-    .getAttestationSignature(
-      attestation.attestation_document.toString(),
-      await wallet.getAddress()
-    );
-
-  // const tx_2 = await kalypso.Generator().updateEcisKey(marketId, attestation.attestation_document, enclaveSignature);
-
-  // const receipt_2 = await tx_2.wait();
-  // console.log("Added Generator ECIES key: ", receipt_2?.hash);
-
   tx = await kalypso
     .Generator()
-    .joinMarketPlace(
+    .joinMarketPlaceWithoutEnclave(
       marketId,
       computeAllocatedPerRequest,
       proofGenerationCost,
-      proposedTimeInBlocks,
-      attestation.attestation_document,
-      enclaveSignature
+      proposedTimeInBlocks
     );
   receipt = await tx.wait();
   console.log("Joined Market Place Transaction: ", receipt?.hash);

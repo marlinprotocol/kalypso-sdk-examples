@@ -1,6 +1,7 @@
 {
-  "marketId": 1,
+  "marketId": 8,
   "startBlock": 79300000,
-  "teeVerifier": "0xE7610BC62Aca7e0192ECD42E32e8d36c68D4712b",
-  "programName": "avail-demo-prover"
+  "teeVerifier": "not deployed",
+  "mockVerifier": "0x4B8d302A982D11d946255cA091F9C242491cDD31",
+  "programName": "aztec prover"
 }
