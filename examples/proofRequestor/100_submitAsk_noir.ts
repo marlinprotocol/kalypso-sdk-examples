@@ -43,6 +43,7 @@ const createAskTest = async () => {
   // console.log({ inputBytes });
 
   const secretString = JSON.stringify(secret);
+  // if no secret, just keep secretString = ""
 
   const latestBlock = await provider.getBlockNumber();
 
@@ -64,10 +65,10 @@ const createAskTest = async () => {
   );
   const tx = await askRequest.wait();
   console.log("Ask Request Hash: ", askRequest.hash, " at block", tx?.blockNumber);
-  // const askId = await kalypso.MarketPlace().getAskId(tx as any);
-  // console.log("askId", askId);
+  const askId = await kalypso.MarketPlace().getAskId(tx as any);
+  console.log("askId", askId);
 
-  // await getProofWithRetry(askId, latestBlock, 20000);
+  await getProofWithRetry(askId, latestBlock, 20000);
 
   return "Done";
 };
