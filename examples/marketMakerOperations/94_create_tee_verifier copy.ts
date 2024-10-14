@@ -29,6 +29,11 @@ async function main(): Promise<string> {
 
   console.log("Tee Verifier Creation Receipt hash", data.hash);
 
+  const tx = await data.wait();
+  const teeVerifierAddress = await kalypso.MarketPlace().getTeeVerifierAddress(tx!);
+
+  console.log({teeVerifierAddress});
+  
   return "Done";
 }
 
