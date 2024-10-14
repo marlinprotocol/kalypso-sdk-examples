@@ -46,6 +46,11 @@ async function main(): Promise<string> {
   const tx = await kalypso.MarketPlace().createPrivateMarket(marketBytes, wrapperAddress, slashingPenalty, proverImagePcrs);
   console.log("Market Creation Receipt hash", tx.hash);
 
+  const receipt = await tx.wait();
+
+  const marketId = await kalypso.MarketPlace().getMarketId(receipt!);
+
+  console.log({marketId});
   return "Done";
 }
 
