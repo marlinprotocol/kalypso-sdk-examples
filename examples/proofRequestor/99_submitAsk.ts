@@ -7,7 +7,14 @@ import BigNumber from "bignumber.js";
 
 import * as fs from "fs";
 import { marketId } from "../../requestData.json";
-import { MarketPlace } from "kalypso-sdk/dist/operators/marketPlace";
+
+const attestation = {
+  "enclavePubKey": "0xe646f8b0071d5ba75931402522cc6a5c42a84a6fea238864e5ac9a0e12d83bd36d0c8109d3ca2b699fce8d082bf313f5d2ae249bb275b6b6e91e0fcd9262f4bb",
+  "PCR0": "0x189038eccf28a3a098949e402f3b3d86a876f4915c5b02d546abb5d8c507ceb1755b8192d8cfca66e8f226160ca4c7a6",
+  "PCR1": "0x5d3938eb05288e20a981038b1861062ff4174884968a39aee5982b312894e60561883576cc7381d1a7d05b809936bd16",
+  "PCR2": "0x6c3ef363c488a9a86faa63a44653fd806e645d4540b40540876f3b811fc1bceecf036a4703f07587c501ee45bb56a1aa",
+  "timestampInMilliseconds": 1729701976691
+};
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
   fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
@@ -23,8 +30,9 @@ const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
 
   let abiCoder = new ethers.AbiCoder();
-  let inputBytes = abiCoder.encode(["string"], ["43e72a96-084a-43c6-9dd6-c55f26939e07"]); // only do base parity from here right now
-  console.log({ inputBytes });
+  let attestation_object = attestation;
+    const types = ["tuple(bytes enclavePubKey, bytes PCR0, bytes PCR1, bytes PCR2, uint256 timestampInMilliseconds)"];
+    let inputBytes = abiCoder.encode(types, [attestation_object]);
 
   const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
   const matchingEngineKey = (
