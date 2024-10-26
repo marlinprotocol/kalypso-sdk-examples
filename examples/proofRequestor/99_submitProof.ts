@@ -29,7 +29,7 @@ const createAskTest = async () => {
   const type_input = ["bytes", "bytes32", "bytes"];
     let proofBytes = abiCoder.encode(type_input, [seal, imageId, journal_bytes]);
 
-const askId = "get from explorer";
+const askId = "2381";
   const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 
   const proof = await kalypso
