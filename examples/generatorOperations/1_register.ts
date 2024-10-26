@@ -16,7 +16,11 @@ const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
 
 const declaredCompute = 100;
-const generatorMetadata = "0xff00abcd00ff";
+
+const generator = {
+
+};
+const generatorMetadata = Buffer.from(JSON.stringify(generator), "utf-8");
 
 async function main() {
   console.log("using address", await wallet.getAddress());
