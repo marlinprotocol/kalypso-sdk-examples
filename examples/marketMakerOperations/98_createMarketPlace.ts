@@ -37,8 +37,8 @@ async function main(): Promise<string> {
   const wrapperAddress = attestation_zk_verifier_wrapper;
   const slashingPenalty = "10000000000";
 
-  const attestation = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().getAttestation();
-  const randomPcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
+  const attestation = await kalypso.MarketPlace().IvsEnclaveConnector().getAttestation();
+  const pcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
     attestation.attestation_document
   );
   const tx = await kalypso
@@ -47,7 +47,7 @@ async function main(): Promise<string> {
       marketBytes,
       wrapperAddress,
       slashingPenalty,
-      randomPcrs
+      pcrs
     );
   console.log("Market Creation Receipt hash", tx.hash);
 

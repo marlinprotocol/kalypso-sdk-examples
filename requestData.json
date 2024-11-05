@@ -1,6 +1,6 @@
 {
-  "marketId": 10,
+  "marketId": 25,
   "startBlock": 79300000,
-  "attestation_zk_verifier_wrapper": "0x0f6E3E50d2da4cb9a29aB045158810ed1F447a0b",
+  "attestation_zk_verifier_wrapper": "0xeac3cca702D210D996480CA558eC809F45Ad5468",
   "programName": "Attestation Zk Verifier"
 }

@@ -17,8 +17,8 @@
     "utilityUrl": "http://not required:1500"
   },
   "ivsEnclave": {
-    "url": "http://not deployed:5000",
-    "utilityUrl": "http://not deployed:1500"
+    "url": "http://3.109.54.190:5000",
+    "utilityUrl": "http://3.109.54.190:1500"
   },
   "matchingEngineEnclave": {
     "url": "http://13.201.131.193:5000",
