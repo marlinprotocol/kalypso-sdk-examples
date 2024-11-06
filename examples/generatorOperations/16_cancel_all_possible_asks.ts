@@ -14,7 +14,7 @@ async function main() {
   const wallet = new ethers.Wallet(keys.generator_private_key, provider);
   console.log("using generator", await wallet.getAddress());
 
-  for (let index = 2400; index < 2500; index++) {
+  for (let index = 2500; index < 2550; index++) {
     const askId = index;
     const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
     try {
