@@ -17,13 +17,13 @@
     "utilityUrl": "http://not required:1500"
   },
   "ivsEnclave": {
-    "url": "http://3.109.54.190:5000",
-    "utilityUrl": "http://3.109.54.190:1500"
+    "url": "http://3.110.146.109:3030",
+    "utilityUrl": "http://3.110.146.109:1500"
   },
   "matchingEngineEnclave": {
     "url": "http://13.201.131.193:5000",
     "utilityUrl": "http://13.201.131.193:1500"
   },
-  "checkInputUrl": "http://3.109.54.190:3030/api/checkEncryptedInputs",
+  "checkInputUrl": "http://3.110.146.109:3030/api/checkEncryptedInputs",
   "attestationVerifierEndPoint": "http://13.201.207.60:1400"
 }

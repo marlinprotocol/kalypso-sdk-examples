@@ -8,9 +8,9 @@ import { PublicKey } from "eciesjs";
 import { marketId } from "../../requestData.json";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/kalypso-chain.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
 );
-const keys = JSON.parse(fs.readFileSync("./keys/kalypso-chain.json", "utf-8"));
+const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(keys.treasury_private_key, provider);
@@ -19,25 +19,24 @@ async function main(): Promise<string> {
   console.log("using address", await wallet.getAddress());
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
 
-  const proverAttestationData = await kalypso
-    .Generator()
-    .GeneratorEnclaveConnector()
+  const ivsAttestationData = await kalypso
+    .MarketPlace()
+    .IvsEnclaveConnector()
     .getAttestation();
-  console.log({ prover_enclave_key: proverAttestationData.secp_key });
-  const proverPubKey = PublicKey.fromHex(
-    proverAttestationData.secp_key as string
-  );
-  console.log({ prover_compressed: proverPubKey.compressed.toString("hex") });
+  console.log({ ivs_enclave_key: ivsAttestationData.secp_key });
 
-  const proverImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
-    proverAttestationData.attestation_document
+  const ivsPubKey = PublicKey.fromHex(
+    ivsAttestationData.secp_key as string
   );
-  console.log({ proverImagePcrs });
+  console.log({ ivs_compressed: ivsPubKey.compressed.toString("hex") });
 
-  const ivsImagePcrs = proverImagePcrs;
+  const ivsImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
+    ivsAttestationData.attestation_document
+  );
+
   const tx = await kalypso
     .MarketPlace()
-    .addExtraImagesToMarket(marketId, [proverImagePcrs], [ivsImagePcrs]);
+    .addExtraImagesToMarket(marketId, [], [ivsImagePcrs]);
   console.log("Add Extra Images to Market", tx.hash);
 
   return "Done";
