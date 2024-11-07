@@ -12,8 +12,8 @@ const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
 async function main1(): Promise<string> {
   const provider = new ethers.JsonRpcProvider(keys.rpc);
-  let admin_private_key = `${keys.admin_private_key}`;
-  const wallet = new ethers.Wallet(admin_private_key, provider);
+  let symbiotic_admin_private_key = `${keys.symbiotic_admin_private_key}`;
+  const wallet = new ethers.Wallet(symbiotic_admin_private_key, provider);
   console.log("using address of admin", await wallet.getAddress());
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
