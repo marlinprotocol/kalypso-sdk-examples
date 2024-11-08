@@ -95,7 +95,7 @@ createAskTest();
 
 async function readFullData(): Promise<string> {
   try {
-    const stream = await kalypso.MarketPlace().IvsEnclaveConnector().buildAttestation(false);
+    const stream = await kalypso.MarketPlace().MatchingEngineEnclaveConnector().buildAttestation(false);
 
     let data = '0x'; // Initialize with '0x' to signify a hex string
     return new Promise((resolve, reject) => {
