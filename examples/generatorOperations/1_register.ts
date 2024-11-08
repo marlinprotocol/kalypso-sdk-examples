@@ -18,8 +18,19 @@ const wallet = new ethers.Wallet(`${keys.generator_private_key}`, provider);
 const declaredCompute = 100;
 
 const generator = {
-
+  display_name: "display name",
+  display_description: "description",
+  contact_email: "contact_email@contact_email.com",
+  github: "coming soon",
+  repo_url: "coming soom",
+  version: "1",
+  categories: ['best', 'higher APR'],
+  tags: ['tester', 'first', 'ui'],
+  license: "nothing",
+  terms_of_service_url: "nothing...",
+  privacy_policy_url: "testing",
 };
+
 const generatorMetadata = Buffer.from(JSON.stringify(generator), "utf-8");
 
 async function main() {
