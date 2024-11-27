@@ -32,8 +32,7 @@ const createAskTest = async () => {
   };
 
   const secret = {
-    x: "1",
-    y: "2",
+    n: "10",
   };
   
   // Convert the object to a JSON string

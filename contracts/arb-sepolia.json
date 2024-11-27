@@ -17,8 +17,8 @@
     "utilityUrl": "http://13.235.50.234:1500"
   },
   "ivsEnclave": {
-    "url": "http://not deployed yet:5000",
-    "utilityUrl": "http://not deployed yet:1500"
+    "url": "http://13.235.50.234:5000",
+    "utilityUrl": "http://13.235.50.234:1500"
   },
   "matchingEngineEnclave": {
     "url": "http://13.201.131.193:5000",
