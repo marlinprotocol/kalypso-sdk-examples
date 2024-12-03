@@ -1,5 +1,5 @@
 {
-  "payment_token": "0x01d84D33CC8636F83d2bb771e184cE57d8356863",
+  "payment_token": "0x8230d71d809718132C2054704F5E3aF1b86B669C",
   "staking_token": "0xdb69299dDE4A00c99b885D9f8748B2AeD1Fe4Ed4",
   "mock_attestation_verifier": "0x1dC40628443D93eA82945a9206e0b527BA3EA028",
   "attestation_verifier": "0x63EEf1576b477Aa60Bfd7300B2C85b887639Ac1b",
