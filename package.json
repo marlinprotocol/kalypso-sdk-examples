@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "kalypso-sdk": "^1.0.45",
+    "kalypso-sdk": "^1.0.50",
     "ts-node": "^10.9.2"
   }
 }
