@@ -14,8 +14,6 @@ const keys = JSON.parse(
   fs.readFileSync("./keys/arb-sepolia-symbiotic.json", "utf-8"),
 );
 
-const reward = new BigNumber(10).pow(18).multipliedBy(145).div(10).toFixed(0);
-
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(keys.treasury_private_key, provider);
 
@@ -23,8 +21,8 @@ const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 
 const semaphore = new Semaphore(1); // only tx per time broadcast
 
-const validRequestsPerHour = 5;
-const invalidRequestsPerHour = 5;
+const validRequestsPerHour = 6;
+const invalidRequestsPerHour = 6;
 
 const invalidAskInterval = new BigNumber(3600_000)
   .div(invalidRequestsPerHour)
@@ -32,6 +30,9 @@ const invalidAskInterval = new BigNumber(3600_000)
 const validAskInterval = new BigNumber(3600_000)
   .div(validRequestsPerHour)
   .toNumber();
+
+  const minReward = new BigNumber('10').pow(6);
+  const maxReward = new BigNumber('10').pow(10);
 
 const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
@@ -97,7 +98,7 @@ async function fireValidAsk(): Promise<never> {
       );
     }
 
-    const proofGenerationTimeInMs = new BigNumber(30000);
+    const proofGenerationTimeInSec = new BigNumber(30000);
     const empty = Buffer.from("0x");
 
     const attestation_live = await readFullData();
@@ -109,9 +110,9 @@ async function fireValidAsk(): Promise<never> {
       const askRequest = await kalypso.MarketPlace().createAsk(
         marketId,
         attestation_live,
-        reward,
+        getRandomBigNumber(minReward, maxReward).toFixed(0),
         (await getExpiryTime()).toFixed(0),
-        proofGenerationTimeInMs.toFixed(0),
+        proofGenerationTimeInSec.toFixed(0),
         await wallet.getAddress(),
         0, // TODO: keep this 0 for now
         empty,
@@ -119,6 +120,7 @@ async function fireValidAsk(): Promise<never> {
         false,
       );
       let tx = await askRequest.wait(10);
+      await release();
       const date = new Date();
       console.log(
         "completed placing the request on chain",
@@ -155,7 +157,7 @@ async function fireInvalidAsk(): Promise<never> {
       );
     }
 
-    const proofGenerationTimeInMs = new BigNumber(30000);
+    const proofGenerationTimeInSec = new BigNumber(30000);
 
     const empty = Buffer.from("0x");
     const old_attestation =
@@ -167,9 +169,9 @@ async function fireInvalidAsk(): Promise<never> {
       const askRequest = await kalypso.MarketPlace().createAsk(
         marketId,
         old_attestation,
-        reward,
+        getRandomBigNumber(minReward, maxReward).toFixed(0),
         (await getExpiryTime()).toFixed(0),
-        proofGenerationTimeInMs.toFixed(0),
+        proofGenerationTimeInSec.toFixed(0),
         await wallet.getAddress(),
         0, // TODO: keep this 0 for now
         empty,
@@ -178,6 +180,7 @@ async function fireInvalidAsk(): Promise<never> {
       );
 
       let tx = await askRequest.wait(10);
+      await release();
       const date = new Date();
       console.log(
         "completed placing the request on chain",
@@ -208,7 +211,7 @@ const delay = (ms: number): Promise<void> => {
 async function getExpiryTime(): Promise<BigNumber> {
   try {
     const now: number = Date.now();
-    const maxAgeInMs: number = 1200000 * 10;
+    const maxAgeInMs: number = 12_000_000;
 
     // Calculate expiry time in milliseconds
     const expiryMs: number = now + maxAgeInMs;
@@ -226,4 +229,30 @@ async function getExpiryTime(): Promise<BigNumber> {
       `Current Timestamp Calculation failed: ${error.message || error}`,
     );
   }
+}
+
+import { randomBytes } from 'crypto';
+function getRandomBigNumber(min: BigNumber, max: BigNumber): BigNumber {
+  if (min.gt(max)) {
+    throw new Error('Min should not be greater than Max');
+  }
+
+  const range = max.minus(min).plus(1); // Inclusive range
+
+  if (range.isZero()) {
+    return min;
+  }
+
+  // Determine the bit length of the range
+  const rangeBitLength = range.toString(16).length * 4; // Approximate bits
+  const byteLength = Math.ceil(rangeBitLength / 8); // Convert bits to bytes
+
+  let randomBigNumber: BigNumber;
+
+  do {
+    const randomBytesBuffer = randomBytes(byteLength);
+    randomBigNumber = new BigNumber('0x' + randomBytesBuffer.toString('hex'));
+  } while (randomBigNumber.gte(range));
+
+  return randomBigNumber.mod(range).plus(min);
 }
