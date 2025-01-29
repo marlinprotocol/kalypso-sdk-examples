@@ -21,8 +21,8 @@ const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 
 const semaphore = new Semaphore(1); // only tx per time broadcast
 
-const validRequestsPerHour = 6;
-const invalidRequestsPerHour = 6;
+const validRequestsPerHour = 2;
+const invalidRequestsPerHour = 2;
 
 const invalidAskInterval = new BigNumber(3600_000)
   .div(invalidRequestsPerHour)
@@ -31,21 +31,25 @@ const validAskInterval = new BigNumber(3600_000)
   .div(validRequestsPerHour)
   .toNumber();
 
-  const minReward = new BigNumber('10').pow(6);
-  const maxReward = new BigNumber('10').pow(10);
+const minReward = new BigNumber("10").pow(6);
+const maxReward = new BigNumber("10").pow(10);
 
 const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
-  const response = await fetch(
-    "https://kalypso-beta.justfortesting.me/ui/market/1",
-  );
-  const data = JSON.parse(await response.text());
-  const registered_generators = data.registered_generators;
-  console.log("Registered generators: ", registered_generators);
-  const jobs_pending = data.jobs.proofs_pending;
-  const jobs_in_progress = data.jobs.proofs_in_progress;
-  console.log("Jobs pending: ", jobs_pending);
-  console.log("Jobs in progress: ", jobs_in_progress);
+  try {
+    const response = await fetch(
+      "https://kalypso-beta.justfortesting.me/ui/market/1",
+    );
+    const data = JSON.parse(await response.text());
+    const registered_generators = data.registered_generators;
+    console.log("Registered generators: ", registered_generators);
+    const jobs_pending = data.jobs.proofs_pending;
+    const jobs_in_progress = data.jobs.proofs_in_progress;
+    console.log("Jobs pending: ", jobs_pending);
+    console.log("Jobs in progress: ", jobs_in_progress);
+  } catch (ex) {
+    console.log("Failed fetching job info", ex);
+  }
 
   const matchingEngineKey = (
     await kalypso.MarketPlace().readMePubKeyInContract()
@@ -231,10 +235,10 @@ async function getExpiryTime(): Promise<BigNumber> {
   }
 }
 
-import { randomBytes } from 'crypto';
+import { randomBytes } from "crypto";
 function getRandomBigNumber(min: BigNumber, max: BigNumber): BigNumber {
   if (min.gt(max)) {
-    throw new Error('Min should not be greater than Max');
+    throw new Error("Min should not be greater than Max");
   }
 
   const range = max.minus(min).plus(1); // Inclusive range
@@ -251,7 +255,7 @@ function getRandomBigNumber(min: BigNumber, max: BigNumber): BigNumber {
 
   do {
     const randomBytesBuffer = randomBytes(byteLength);
-    randomBigNumber = new BigNumber('0x' + randomBytesBuffer.toString('hex'));
+    randomBigNumber = new BigNumber("0x" + randomBytesBuffer.toString("hex"));
   } while (randomBigNumber.gte(range));
 
   return randomBigNumber.mod(range).plus(min);
