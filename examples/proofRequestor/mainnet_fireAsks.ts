@@ -22,7 +22,7 @@ const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 const semaphore = new Semaphore(1); // only tx per time broadcast
 
 const validRequestsPerHour = 2;
-const invalidRequestsPerHour = 2;
+const invalidRequestsPerHour = 0.3;
 
 const invalidAskInterval = new BigNumber(3600_000)
   .div(invalidRequestsPerHour)
