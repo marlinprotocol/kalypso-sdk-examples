@@ -22,7 +22,7 @@ const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 const semaphore = new Semaphore(1); // only tx per time broadcast
 
 const validRequestsPerHour = 2;
-const invalidRequestsPerHour = 0.3;
+const invalidRequestsPerHour = 0.4;
 
 const invalidAskInterval = new BigNumber(3600_000)
   .div(invalidRequestsPerHour)
@@ -31,8 +31,8 @@ const validAskInterval = new BigNumber(3600_000)
   .div(validRequestsPerHour)
   .toNumber();
 
-const minReward = new BigNumber("10").pow(6).multipliedBy(1.1);
-const maxReward = new BigNumber("10").pow(6).multipliedBy(1.5);
+const minReward = new BigNumber("10").pow(5).multipliedBy(1.1);
+const maxReward = new BigNumber("10").pow(5).multipliedBy(1.5);
 
 const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
@@ -56,8 +56,8 @@ const createAskTest = async () => {
   ).toString();
   console.log({ matchingEngineKey });
 
-  fireInvalidAsk();
-  // fireValidAsk();
+  // fireInvalidAsk();
+  fireValidAsk();
 };
 
 createAskTest();
