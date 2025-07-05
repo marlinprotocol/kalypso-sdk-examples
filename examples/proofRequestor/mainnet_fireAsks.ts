@@ -31,8 +31,8 @@ const validAskInterval = new BigNumber(3600_000)
   .div(validRequestsPerHour)
   .toNumber();
 
-const minReward = new BigNumber("10").pow(5).multipliedBy(1.1);
-const maxReward = new BigNumber("10").pow(5).multipliedBy(1.5);
+const minReward = new BigNumber("10").pow(4).multipliedBy(1.1);
+const maxReward = new BigNumber("10").pow(4).multipliedBy(1.5);
 
 const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
