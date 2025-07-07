@@ -102,7 +102,7 @@ async function fireValidAsk(): Promise<never> {
       );
     }
 
-    const proofGenerationTimeInSec = new BigNumber(3000);
+    const proofGenerationTimeInSec = new BigNumber(10000);
     const empty = Buffer.from("0x");
 
     const attestation_live = await readFullData();
