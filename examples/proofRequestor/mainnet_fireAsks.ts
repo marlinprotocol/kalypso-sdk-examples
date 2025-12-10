@@ -3,6 +3,7 @@ import { KalypsoSdk } from "kalypso-sdk";
 import { ethers } from "ethers";
 import BigNumber from "bignumber.js";
 import { Semaphore } from "async-mutex";
+import axios from "axios";
 
 import * as fs from "fs";
 import { marketId } from "../../requestDataSymbiotic.json";
@@ -10,9 +11,7 @@ import { marketId } from "../../requestDataSymbiotic.json";
 const kalypsoConfig: KalspsoConfig = JSON.parse(
   fs.readFileSync("./contracts/arb-one.json", "utf-8"),
 );
-const keys = JSON.parse(
-  fs.readFileSync("./keys/arb-one.json", "utf-8"),
-);
+const keys = JSON.parse(fs.readFileSync("./keys/arb-one.json", "utf-8"));
 
 const provider = new ethers.JsonRpcProvider(keys.rpc);
 const wallet = new ethers.Wallet(keys.treasury_private_key, provider);
@@ -21,7 +20,7 @@ const kalypso = new KalypsoSdk(wallet as any, kalypsoConfig);
 
 const semaphore = new Semaphore(1); // only tx per time broadcast
 
-const validRequestsPerHour = 2;
+const validRequestsPerHour = 1;
 const invalidRequestsPerHour = 0.4;
 
 const invalidAskInterval = new BigNumber(3600_000)
@@ -37,9 +36,7 @@ const maxReward = new BigNumber("10").pow(4).multipliedBy(1.5);
 const createAskTest = async () => {
   console.log("using address", await wallet.getAddress());
   try {
-    const response = await fetch(
-      "https://indexer.kalypso.org/ui/market/1",
-    );
+    const response = await fetch("https://indexer.kalypso.org/ui/market/1");
     const data = JSON.parse(await response.text());
     const registered_generators = data.registered_generators;
     console.log("Registered generators: ", registered_generators);
@@ -109,8 +106,16 @@ async function fireValidAsk(): Promise<never> {
     console.log("attestation length", attestation_live.length / 2 - 1);
 
     const [_, release] = await semaphore.acquire();
-    // 2.TODO. Verify before whether this request is provable before shooting request out
     try {
+      const validAttestation = await verifyAttestation(attestation_live);
+      if (!validAttestation) {
+        console.log("Invalid attestation is found");
+        await delay(10000);
+        continue;
+      } else {
+        console.log("Valid attestation is found");
+      }
+
       const askRequest = await kalypso.MarketPlace().createAsk(
         marketId,
         attestation_live,
@@ -145,6 +150,37 @@ async function fireValidAsk(): Promise<never> {
       await release();
     }
     await delay(validAskInterval);
+  }
+}
+
+async function verifyAttestation(attestationData: string): Promise<boolean> {
+  // Strip 0x / 0X prefix if present
+  const cleanHex =
+    attestationData.startsWith("0x") || attestationData.startsWith("0X")
+      ? attestationData.slice(2)
+      : attestationData;
+
+  const payload = {
+    attestation_hex: cleanHex,
+    verifier_ip: "verifier-12345", // temporary placeholder
+  };
+
+  try {
+    const res = await axios.post(
+      "http://localhost:7777/v1/attestation",
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log("Attestation response:", res.data);
+    return true;
+  } catch (err: any) {
+    console.error(err);
+    return false;
   }
 }
 

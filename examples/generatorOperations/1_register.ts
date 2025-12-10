@@ -8,7 +8,7 @@ import { KalypsoSdk } from "kalypso-sdk";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -24,8 +24,8 @@ const generator = {
   github: "coming soon",
   repo_url: "coming soom",
   version: "1",
-  categories: ['best', 'higher APR'],
-  tags: ['tester', 'first', 'ui'],
+  categories: ["best", "higher APR"],
+  tags: ["tester", "first", "ui"],
   license: "nothing",
   terms_of_service_url: "nothing...",
   privacy_policy_url: "testing",

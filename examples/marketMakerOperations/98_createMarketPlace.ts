@@ -30,25 +30,23 @@ async function main(): Promise<string> {
     license: "coming soon ...",
     categories: ["attestation", "zkproofs"],
     tags: ["attestation", "zkproofs"],
-    contact_email: "comingsoon@comingsoon"
+    contact_email: "comingsoon@comingsoon",
   };
   const marketBytes = Buffer.from(JSON.stringify(marketSetupData), "utf-8");
 
   const wrapperAddress = attestation_zk_verifier_wrapper;
   const slashingPenalty = "10000000000";
 
-  const attestation = await kalypso.MarketPlace().IvsEnclaveConnector().getAttestation();
+  const attestation = await kalypso
+    .MarketPlace()
+    .IvsEnclaveConnector()
+    .getAttestation();
   const pcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
-    attestation.attestation_document
+    attestation.attestation_document,
   );
   const tx = await kalypso
     .MarketPlace()
-    .createPublicMarket(
-      marketBytes,
-      wrapperAddress,
-      slashingPenalty,
-      pcrs
-    );
+    .createPublicMarket(marketBytes, wrapperAddress, slashingPenalty, pcrs);
   console.log("Market Creation Receipt hash", tx.hash);
 
   return "Done";

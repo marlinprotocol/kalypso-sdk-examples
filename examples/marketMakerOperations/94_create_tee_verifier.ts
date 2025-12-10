@@ -6,7 +6,7 @@ import * as fs from "fs";
 import { PublicKey } from "eciesjs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -34,12 +34,12 @@ async function main(): Promise<string> {
   console.log({ prover_enclave_key: proverAttestationData.secp_key });
 
   const proverPubKey = PublicKey.fromHex(
-    proverAttestationData.secp_key as string
+    proverAttestationData.secp_key as string,
   );
   console.log({ prover_compressed: proverPubKey.compressed.toString("hex") });
 
   const proverImagePcrs = KalypsoSdk.getRlpedPcrsFromAttestation(
-    proverAttestationData.attestation_document
+    proverAttestationData.attestation_document,
   );
   console.log({ proverImagePcrs });
 
@@ -49,7 +49,7 @@ async function main(): Promise<string> {
       await wallet.getAddress(),
       kalypsoConfig.tee_verifier_deployer,
       kalypsoConfig.attestation_verifier,
-      proverImagePcrs
+      proverImagePcrs,
     );
 
   console.log("Tee Verifier Creation Receipt hash", data.hash);

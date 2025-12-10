@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async-mutex": "^0.5.0",
+    "axios": "^1.13.2",
     "kalypso-sdk": "^1.0.58",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",

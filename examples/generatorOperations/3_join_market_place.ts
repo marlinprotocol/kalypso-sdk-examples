@@ -10,7 +10,7 @@ import BigNumber from "bignumber.js";
 import { marketId } from "../../requestData.json";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
 );
 const keys = JSON.parse(fs.readFileSync("./keys/arb-sepolia.json", "utf-8"));
 
@@ -35,7 +35,7 @@ async function main() {
       marketId,
       computeAllocatedPerRequest,
       proofGenerationCost,
-      proposedTimeInBlocks
+      proposedTimeInBlocks,
     );
   receipt = await tx.wait();
   console.log("Joined Market Place Transaction: ", receipt?.hash);

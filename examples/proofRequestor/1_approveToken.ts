@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import * as fs from "fs";
 
 const kalypsoConfig: KalspsoConfig = JSON.parse(
-  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8")
+  fs.readFileSync("./contracts/arb-sepolia.json", "utf-8"),
 );
 
 async function main() {
@@ -16,7 +16,7 @@ async function main() {
   const approval_amount = "10000000000000000000000";
 
   const kalypso = new KalypsoSdk(wallet, kalypsoConfig);
-  
+
   console.log("Platform token approval done");
   let payment_token_approval = await kalypso
     .MarketPlace()
