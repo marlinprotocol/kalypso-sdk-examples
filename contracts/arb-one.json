@@ -1,0 +1,28 @@
+{
+  "payment_token": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  "attestation_verifier": "0x63EEf1576b477Aa60Bfd7300B2C85b887639Ac1b",
+  "start_block": "350000000",
+  "proof_market_place": "0xE68A7457c0fd11CcBe96126Bf69B27a9064636a2",
+  "entity_registry": "0x9C0Da9ac6B563A87CAf6F5b49f58f3C6D8D9BDef",
+  "platform_token": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  "staking_token": "",
+  "mock_attestation_verifier": "",
+  "generator_registry": "",
+  "symbiotic_staking": "",
+  "native_staking": "",
+  "stake_manager": "",
+  "generatorEnclave": {
+    "url": "http://not required:5000",
+    "utilityUrl": "http://not required:1500"
+  },
+  "ivsEnclave": {
+    "url": "http://3.110.146.109:3030",
+    "utilityUrl": "http://3.110.146.109:1500"
+  },
+  "matchingEngineEnclave": {
+    "url": "http://13.201.131.193:5000",
+    "utilityUrl": "http://13.201.131.193:1500"
+  },
+  "checkInputUrl": "http://3.110.146.109:3030/api/checkEncryptedInputs",
+  "attestationVerifierEndPoint": "http://13.201.207.60:1400"
+}
